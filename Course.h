@@ -7,9 +7,12 @@
  *           on how the grade is calculated. This is in a class on its own.
  */
 
+#include "Assignment.h"
+
 class Course {
 public:
     Course();
+
 private:
     
 };

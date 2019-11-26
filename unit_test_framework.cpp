@@ -15,7 +15,7 @@ using namespace std;
 // DO NOT CHANGE THIS UNLESS YOU REEEEALLY KNOW WHAT
 // YOU'RE DOING. CONTACT akamil@umich.edu or jameslp@umich.edu IF
 // YOU HAVE QUESTIONS ABOUT THIS.
-TestSuite* TestSuite::instance = &TestSuite::get();
+TestSuite *TestSuite::instance = &TestSuite::get();
 
 static TestSuiteDestroyer destroyer;
 
@@ -30,15 +30,13 @@ void TestCase::run(bool quiet_mode) {
         if (not quiet_mode) {
             cout << "PASS" << endl;
         }
-    }
-    catch (TestFailure& failure) {
+    } catch (TestFailure &failure) {
         failure_msg = failure.to_string();
 
         if (not quiet_mode) {
             cout << "FAIL" << endl;
         }
-    }
-    catch (exception& e) {
+    } catch (exception &e) {
         ostringstream oss;
         oss << "Uncaught " << demangle(typeid(e).name()) << " in test \""
             << name << "\": \n";
@@ -54,8 +52,7 @@ void TestCase::run(bool quiet_mode) {
 void TestCase::print(bool quiet_mode) {
     if (quiet_mode) {
         cout << name << ": ";
-    }
-    else {
+    } else {
         cout << "** Test case \"" << name << "\": ";
     }
 
@@ -64,14 +61,12 @@ void TestCase::print(bool quiet_mode) {
         if (not quiet_mode) {
             cout << failure_msg << endl;
         }
-    }
-    else if (not exception_msg.empty()) {
+    } else if (not exception_msg.empty()) {
         cout << "ERROR" << endl;
         if (not quiet_mode) {
             cout << exception_msg << endl;
         }
-    }
-    else {
+    } else {
         cout << "PASS" << endl;
     }
 }
@@ -84,12 +79,11 @@ public:
     int status;
 };
 
-int TestSuite::run_tests(int argc, char** argv) {
+int TestSuite::run_tests(int argc, char **argv) {
     vector<string> test_names_to_run;
     try {
         test_names_to_run = get_test_names_to_run(argc, argv);
-    }
-    catch (ExitSuite& e) {
+    } catch (ExitSuite &e) {
         return e.status;
     }
 
@@ -130,7 +124,7 @@ int TestSuite::run_tests(int argc, char** argv) {
     return 1;
 }
 
-vector<string> TestSuite::get_test_names_to_run(int argc, char** argv) {
+vector<string> TestSuite::get_test_names_to_run(int argc, char **argv) {
     vector<string> test_names_to_run;
     for (auto i = 1; i < argc; ++i) {
         if (argv[i] == string("--show_test_names") or
@@ -139,11 +133,9 @@ vector<string> TestSuite::get_test_names_to_run(int argc, char** argv) {
             TestSuite::get().print_test_names(cout);
             cout << flush;
             throw ExitSuite();
-        }
-        else if (argv[i] == string("--quiet") or argv[i] == string("-q")) {
+        } else if (argv[i] == string("--quiet") or argv[i] == string("-q")) {
             TestSuite::get().enable_quiet_mode();
-        }
-        else if (argv[i] == string("--help") or argv[i] == string("-h")) {
+        } else if (argv[i] == string("--help") or argv[i] == string("-h")) {
             cout << "usage: " << argv[0]
                  << " [-h] [-n] [-q] [[TEST_NAME] ...]\n";
             cout
@@ -159,46 +151,44 @@ vector<string> TestSuite::get_test_names_to_run(int argc, char** argv) {
                 << endl;
 
             throw ExitSuite();
-        }
-        else {
+        } else {
             test_names_to_run.push_back(argv[i]);
         }
     }
 
     if (test_names_to_run.empty()) {
         transform(begin(tests_), end(tests_), back_inserter(test_names_to_run),
-                  [](const pair<string, TestCase>& p) { return p.first; });
+                  [](const pair<string, TestCase> &p) { return p.first; });
     }
     return test_names_to_run;
 }
 
-ostream& operator<<(ostream& os, const TestFailure& test_failure) {
+ostream &operator<<(ostream &os, const TestFailure &test_failure) {
     return test_failure.print(os);
 }
 
 //------------------------------------------------------------------------------
 
 #if defined(__clang__) || defined(__GLIBCXX__) || defined(__GLIBCPP__)
-#include <cxxabi.h>
 #include <cstdlib>
-string demangle(const char* typeinfo_name) {
+#include <cxxabi.h>
+string demangle(const char *typeinfo_name) {
     int status = 0;
-    char* demangled =
+    char *demangled =
         abi::__cxa_demangle(typeinfo_name, nullptr, nullptr, &status);
     if (status == 0) {
         string result = demangled;
         std::free(demangled);
         return result;
-    }
-    else {
+    } else {
         return typeinfo_name;
     }
 }
 #else
-string demangle(const char* typeinfo_name) {
+string demangle(const char *typeinfo_name) {
     return typeinfo_name;
 }
-#endif  // defined(__clang__) || defined(__GLIBCXX__) || defined(__GLIBCPP__)
+#endif // defined(__clang__) || defined(__GLIBCXX__) || defined(__GLIBCPP__)
 
 //------------------------------------------------------------------------------
 

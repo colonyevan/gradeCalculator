@@ -9,18 +9,16 @@
 
 using namespace std;
 
-Assignment::Assignment() 
+Assignment::Assignment()
     : name(""), totalScore(-1), weight(-1),
       avgScore(-1), medianScore(-1), standardDeviation(-1),
       userScore(-1) {
-
 }
 
 Assignment::Assignment(string nameIn, double totalScoreIn, double wegihtIn)
     : name(nameIn), totalScore(totalScoreIn), weight(wegihtIn),
       avgScore(-1), medianScore(-1), standardDeviation(-1),
       userScore(-1) {
-
 }
 
 void Assignment::setName(string nameIn) {

@@ -156,12 +156,11 @@ public:
      */
     void loadAssignment(valueHold valueIn);
 
-
 private:
     // Assignment Information
     std::string name;
     double totalScore; // Strictly greater than 0
-    double weight; // Strictly between 0 and 1 (non-inclusive)
+    double weight;     // Strictly between 0 and 1 (non-inclusive)
 
     // Class Score Statistics
     double avgScore;
