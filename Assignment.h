@@ -8,6 +8,11 @@
 
 #include <string>
 
+struct valueHold {
+    std::string name;
+    double scores[6];
+};
+
 class Assignment {
 public:
     // Constructors
@@ -61,7 +66,7 @@ public:
      * Modifies: Nothing
      * Effects:  Sets medianScore
      */
-    const void setMedianScore(double scoreIn);
+    void setMedianScore(double scoreIn);
 
     /* 
      * Requires: Nothing
@@ -136,6 +141,20 @@ public:
     double getUserScore() const;
 
     // Save and Load
+
+    /*
+     * Requires: A properly initalized 
+     * Modifies: Nothing
+     * Effects:  Returns a struct for saving into the 
+     */
+    valueHold saveAssignment() const;
+
+    /*
+     * Requires: A valueHold struct holding valid values
+     * Modifies: *this
+     * Effects:  Sets all variables according to the valueHold struct
+     */
+    void loadAssignment(valueHold valueIn);
 
 
 private:
